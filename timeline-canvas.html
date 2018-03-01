@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Canvas For Timeline</title>
+</head>
+<body>
+<div style="margin: 0;padding: 0;">
+    <canvas id="timeline" width="1500" height="62" style="cursor: pointer;border:1px solid #2b2f33;background-color: #2b2f33;"  ondragstart="return false;"></canvas>
+    <br>
+    <button id="setTimeMove">setTimeMove</button>
+    <button id="stopTimeMove">stopTimeMove</button>
+    <button id="setTime">setTime</button>
+    <input type="text" id="setTimeValue"/>
+    <script src="./jquery-1.10.2.js"></script>
+    <script src="./timeline-canvas.js"></script>
+    <script>
+        var setTimeMove = null;
+        $("#setTimeMove").click(function(){
+            setTimeMove = setInterval(function(){
+                set_time_to_middle(new Date().getTime());
+            },1000)
+        })
+        $("#stopTimeMove").click(function(){
+            clearInterval(setTimeMove);
+        })
+        $("#setTime").click(function(){
+            var time = new Date($("#setTimeValue").val()).getTime();
+            set_time_to_middle(time);
+        })
+        $("#timeline").mouseup(function(){
+            var a = returnMouseupTime();
+            console.log("mouseupTime = "+new Date(a));
+        })
+    </script>
+</div>
+

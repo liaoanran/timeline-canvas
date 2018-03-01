@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Canvas For Timeline</title>
+</head>
+<body>
+<div style="margin: 0;padding: 0;">
+    <canvas id="timeline" width="1500" height="62" style="cursor: pointer;border:1px solid #2b2f33;background-color: #2b2f33;"  ondragstart="return false;"></canvas>
+    <br>
+    <button id="setTimeMove">setTimeMove</button>
+    <button id="stopTimeMove">stopTimeMove</button>
+    <button id="toggleCell">toggleCell</button>
+    <button id="setTime">setTime</button>
+    <input type="text" id="setTimeValue"/>
+    <script src="./jquery-1.10.2.js"></script>
+    <script src="./timeline-canvas.1.js"></script>
+    <script>
+        /*模拟数据*/
+        var timecell = [
+            {
+                "beginTime":new Date().getTime()-3*3600*1000,
+                "endTime":new Date().getTime()-1*3600*1000,
+                "style": {
+                    "background":"rgba(132, 244, 180, 0.498039)"
+                }
+            },
+            {
+                "beginTime":new Date().getTime()-6*3600*1000,
+                "endTime":new Date().getTime()-4*3600*1000,
+                "style": {
+                    "background":"rgba(132, 244, 180, 0.498039)"
+                }
+            }
+        ]
+        var _timecell = [
+            {
+                "beginTime":new Date().getTime()-4*3600*1000,
+                "endTime":new Date().getTime()-1*3600*1000,
+                "style": {
+                    "background":"red"
+                }
+            }
+        ]
+        /*模拟数据 end*/
+
+        $("#timeline").TimeSlider({
+            init_cells:timecell
+        });
+        
+        var time1 = new Date().getTime()-12*3600*1000;
+        $("#toggleCell").click(function(){
+            $("#timeline").TimeSlider('init',time1,_timecell);
+        })
+
+        var setTimeMove = null;
+        $("#setTimeMove").click(function(){
+            setTimeMove = setInterval(function(){
+                $("#timeline").TimeSlider('set_time_to_middle',new Date().getTime());
+            },1000)
+        })
+
+        $("#stopTimeMove").click(function(){
+            clearInterval(setTimeMove);
+        })
+
+        $("#setTime").click(function(){
+            var time = new Date($("#setTimeValue").val()).getTime();
+            $("#timeline").TimeSlider('set_time_to_middle',time);
+        })
+
+        $("#timeline").mouseup(function(){
+            var a = $("#timeline").TimeSlider('returnMouseupTime',null,null,function(time){
+                console.log("mouseupTime = "+new Date(time));
+            });
+        })
+    </script>
+</div>
+
